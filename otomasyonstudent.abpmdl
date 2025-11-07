@@ -1,0 +1,108 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "4.3.6",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/06/2025 14:14:54 +00:00"
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/06/2025 14:14:54 +00:00"
+    },
+    "Volo.Abp.Identity": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/06/2025 14:14:54 +00:00"
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/06/2025 14:14:54 +00:00"
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/06/2025 14:14:54 +00:00"
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/06/2025 14:14:54 +00:00"
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/06/2025 14:14:54 +00:00"
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "otomasyonstudent.Application": {
+      "path": "src/otomasyonstudent.Application/otomasyonstudent.Application.abppkg",
+      "folder": "src"
+    },
+    "otomasyonstudent.Application.Tests": {
+      "path": "test/otomasyonstudent.Application.Tests/otomasyonstudent.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "otomasyonstudent.Domain.Shared": {
+      "path": "src/otomasyonstudent.Domain.Shared/otomasyonstudent.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "otomasyonstudent.Application.Contracts": {
+      "path": "src/otomasyonstudent.Application.Contracts/otomasyonstudent.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "otomasyonstudent.HttpApi": {
+      "path": "src/otomasyonstudent.HttpApi/otomasyonstudent.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "otomasyonstudent.HttpApi.Client": {
+      "path": "src/otomasyonstudent.HttpApi.Client/otomasyonstudent.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "otomasyonstudent.EntityFrameworkCore.Tests": {
+      "path": "test/otomasyonstudent.EntityFrameworkCore.Tests/otomasyonstudent.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "otomasyonstudent.EntityFrameworkCore": {
+      "path": "src/otomasyonstudent.EntityFrameworkCore/otomasyonstudent.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "otomasyonstudent.TestBase": {
+      "path": "test/otomasyonstudent.TestBase/otomasyonstudent.TestBase.abppkg",
+      "folder": "test"
+    },
+    "otomasyonstudent.Domain.Tests": {
+      "path": "test/otomasyonstudent.Domain.Tests/otomasyonstudent.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "otomasyonstudent.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/otomasyonstudent.HttpApi.Client.ConsoleTestApp/otomasyonstudent.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "otomasyonstudent.DbMigrator": {
+      "path": "src/otomasyonstudent.DbMigrator/otomasyonstudent.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "otomasyonstudent.Blazor": {
+      "path": "src/otomasyonstudent.Blazor/otomasyonstudent.Blazor.abppkg",
+      "folder": "src"
+    },
+    "otomasyonstudent.Domain": {
+      "path": "src/otomasyonstudent.Domain/otomasyonstudent.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}
