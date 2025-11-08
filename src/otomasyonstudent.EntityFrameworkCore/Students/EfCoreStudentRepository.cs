@@ -110,7 +110,7 @@ namespace otomasyonstudent.Students
                 .WhereIf(!string.IsNullOrWhiteSpace(email), e => e.Email != null && e.Email.Contains(email!));
         }
 
-        // ✅ StudentWithNavigationProperties için overload
+        
         protected virtual IQueryable<StudentWithNavigationProperties> ApplyFilter(
             IQueryable<StudentWithNavigationProperties> query,
             string? filterText = null,

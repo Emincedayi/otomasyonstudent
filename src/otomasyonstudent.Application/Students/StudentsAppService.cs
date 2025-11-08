@@ -1,5 +1,7 @@
 ﻿using AutoMapper.Internal.Mappers;
 using otomasyonstudent.Courses;
+using otomasyonstudent.Students;
+using System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
 
 
@@ -16,12 +20,12 @@ namespace otomasyonstudent.Students
 
     public class StudentsAppService :
         CrudAppService<
-            Student,                // Entity
-            StudentDto,             // DTO to return
-            Guid,                   // Primary Key
-            PagedAndSortedResultRequestDto, // Paging input
-            StudentCreateDto,        // Create input
-            StudentUpdateDto>,       // Update input
+            Student,              
+            StudentDto,             
+            Guid,                  
+            PagedAndSortedResultRequestDto, 
+            StudentCreateDto,       
+            StudentUpdateDto>,       
         IStudentsAppService
     {
         private readonly IStudentRepository _studentRepository;
@@ -36,22 +40,49 @@ namespace otomasyonstudent.Students
             _studentManager = studentManager;
         }
 
-      /*  public override async Task<StudentDto> CreateAsync(StudentCreateDto input)
+        public override async Task<StudentDto> CreateAsync(StudentCreateDto input)
         {
             var student = await _studentManager.CreateAsync(
-                input.StudentNo, input.FirstName, input.LastName, input.Email, input.BirthDate
+                input.StudentNo,
+                input.FirstName,
+                input.Gender,         
+                input.Email,
+                input.Phone,
+                input.BirthDate
             );
 
             await _studentRepository.InsertAsync(student);
             return ObjectMapper.Map<Student, StudentDto>(student);
-        }*/
+        }
+
 
         public override async Task<StudentDto> UpdateAsync(Guid id, StudentUpdateDto input)
         {
             var student = await _studentRepository.GetAsync(id);
-            //await _studentManager.UpdateAsync(student, input.FirstName, input.LastName, input.Email, input.BirthDate);
+
+            await _studentManager.UpdateAsync(
+                id,
+                input.FirstName,
+                input.LastName,
+                input.Gender,
+                input.Email,
+                input.Phone,
+                input.BirthDate,
+                input.StudentNo
+            );
+
             await _studentRepository.UpdateAsync(student);
             return ObjectMapper.Map<Student, StudentDto>(student);
         }
+        public override async Task DeleteAsync(Guid id)
+        {
+            var student = await _studentRepository.GetAsync(id);
+
+         
+           await _studentRepository.HardDeleteAsync(student);
+          
+        }
     }
 }
+
+

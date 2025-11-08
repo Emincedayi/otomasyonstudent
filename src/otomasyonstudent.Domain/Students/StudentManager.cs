@@ -32,8 +32,7 @@ namespace otomasyonstudent.Students
             student.SetLastName(lastName);
             student.SetGender(gender);
             student.SetEmail(email);
-         //   student.SetPhoneNumber(phoneNumber);
-            // dateOfBirth is direct property (not validated here)
+       
             student.SetConcurrencyStampIfNotNull(concurrencyStamp);
 
             return await studentRepository.UpdateAsync(student, cancellationToken: cancellationToken);

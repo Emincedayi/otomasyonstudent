@@ -1,0 +1,178 @@
+﻿@page "/students"
+@using otomasyonstudent.Students
+@using Volo.Abp.Application.Dtos
+@using otomasyonstudent.EnumGenders
+@inject IStudentsAppService StudentsAppService
+@inject IJSRuntime JS 
+
+
+<PageTitle>Students</PageTitle>
+
+<div class="container mt-4">
+
+    <h3>Student Management</h3>
+
+    <Button Color="Color.Primary" Class="mb-3" Clicked="@ShowAddForm">Add Student</Button>
+
+    @if (isFormVisible)
+    {
+        <div class="card p-3 mb-4">
+            <h5>@(isEditing ? "Edit Student" : "Add Student")</h5>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <TextEdit @bind-Text="formModel.StudentNo" Placeholder="Student No" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <TextEdit @bind-Text="formModel.FirstName" Placeholder="First Name" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <TextEdit @bind-Text="formModel.LastName" Placeholder="Last Name" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <Select TValue="EnumGender" @bind-SelectedValue="formModel.Gender">
+                        <SelectItem Value="EnumGender.Male">Male</SelectItem>
+                        <SelectItem Value="EnumGender.Female">Female</SelectItem>
+                    </Select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <TextEdit @bind-Text="formModel.Email" Placeholder="Email" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <TextEdit @bind-Text="formModel.Phone" Placeholder="Phone" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <DateEdit @bind-Date="formModel.BirthDate" Placeholder="Birth Date" />
+                </div>
+            </div>
+
+            <Button Color="Color.Success" Class="me-2" Clicked="@SaveStudent">Save</Button>
+            <Button Color="Color.Secondary" Clicked="@CancelForm">Cancel</Button>
+        </div>
+    }
+
+    <Table FullWidth="true" Striped="true" Bordered="true">
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell>Student No</TableHeaderCell>
+                <TableHeaderCell>First Name</TableHeaderCell>
+                <TableHeaderCell>Last Name</TableHeaderCell>
+                <TableHeaderCell>Email</TableHeaderCell>
+                <TableHeaderCell>Birth Date</TableHeaderCell>
+                <TableHeaderCell>Actions</TableHeaderCell>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+            @if (students == null)
+            {
+                <TableRow>
+                    <TableCell ColSpan="6" Class="text-center">Loading...</TableCell>
+                </TableRow>
+            }
+            else if (!students.Any())
+            {
+                <TableRow>
+                    <TableCell ColSpan="6" Class="text-center">No students found.</TableCell>
+                </TableRow>
+            }
+            else
+            {
+                @foreach (var s in students)
+                {
+                    <TableRow>
+                        <TableCell>@s.StudentNo</TableCell>
+                        <TableCell>@s.FirstName</TableCell>
+                        <TableCell>@s.LastName</TableCell>
+                        <TableCell>@s.Email</TableCell>
+                        <TableCell>@s.BirthDate.ToShortDateString()</TableCell>
+                        <TableCell>
+                            <Button Size="Size.Small" Color="Color.Info" Clicked="@(() => EditStudent(s))">Edit</Button>
+                            <Button Size="Size.Small" Color="Color.Danger" Class="ms-2" Clicked="@(() => DeleteStudent(s))">Delete</Button>
+                        </TableCell>
+                    </TableRow>
+                }
+            }
+        </TableBody>
+    </Table>
+</div>
+
+@code {
+    private List<StudentDto> students = new();
+    private StudentCreateDto formModel = new();
+    private bool isFormVisible = false;
+    private bool isEditing = false;
+    private Guid editingId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStudents();
+    }
+
+    private async Task LoadStudents()
+    {
+        var result = await StudentsAppService.GetListAsync(new PagedAndSortedResultRequestDto());
+        students = result.Items.ToList();
+    }
+
+    private void ShowAddForm()
+    {
+        formModel = new StudentCreateDto();
+        isFormVisible = true;
+        isEditing = false;
+    }
+
+    private void CancelForm()
+    {
+        isFormVisible = false;
+        isEditing = false;
+    }
+
+    private void EditStudent(StudentDto student)
+    {
+        formModel = new StudentCreateDto
+        {
+            StudentNo = student.StudentNo,
+            FirstName = student.FirstName,
+            LastName = student.LastName,
+            Email = student.Email,
+            BirthDate = student.BirthDate
+        };
+
+        editingId = student.Id;
+        isFormVisible = true;
+        isEditing = true;
+    }
+
+    private async Task SaveStudent()
+    {
+        if (!isEditing)
+        {
+            await StudentsAppService.CreateAsync(formModel);
+        }
+        else
+        {
+            var updateDto = new StudentUpdateDto
+            {
+                FirstName = formModel.FirstName,
+                LastName = formModel.LastName,
+                Email = formModel.Email,
+                BirthDate = formModel.BirthDate
+            };
+
+            await StudentsAppService.UpdateAsync(editingId, updateDto);
+        }
+
+        isFormVisible = false;
+        await LoadStudents();
+    }
+
+    private async Task DeleteStudent(StudentDto student)
+    {
+        bool confirmed = await JS.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {student.FirstName} {student.LastName}?");
+        if (confirmed)
+        {
+            await StudentsAppService.DeleteAsync(student.Id);
+            await LoadStudents();
+        }
+    }
+}
